@@ -40,7 +40,6 @@ You should create one R script called run_analysis.R that does the following.
 Set the working directory.  Our input files are located in a sub-folder 
 named: "dataset".
 
-setwd("~/GitHub/Humanavatar/Getting_and_Cleaning_Data/Final_Exercise")
 
 ## Load needed (required) libraries.
 Require is chosen over library as require allows a recovery path whereas library aborts on a failed load.
@@ -58,7 +57,10 @@ read in the "features" (Variable labels) and activities.
 ```{r}
 features <- read.table("dataset/features.txt")
 activities <- read.table("dataset/activity_labels.txt")
+```
 
+show the str() for features and activities
+```{r}
 str(features)
 str(activities)
 ```
@@ -155,7 +157,7 @@ combined <- cbind(combined, combinedactivity)
 dim(combined)
 str(combined)
 ```
-### End step 1.
+End step 1.
 
 ## 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 
@@ -183,10 +185,16 @@ dim(combined2)
 str(combined2)
 ```
 
+list the names for combined2
+```{r}
+names(combined2)
+```
+
 End Step 2.
 
  
 ## 3. Uses descriptive activity names to name the activities in the data set
+First, verify there are no activity values which are not able to be matched to the values in the activities$V1 column.
 ```{r} 
 if(length(setdiff(combined2$activity, activities$V1))) {
   stop('Unexpected activity value found in the combined2$activity column')
@@ -204,13 +212,24 @@ End Step 3
 
 
 ## 4. Appropriately label the data set with descriptive variable names.
- 
- "t" at the front of a name is replaced with "Time".
- "f" at the front of a name is replaced with "Frequency".
- "Gyro" in the name is replaced with "Gyroscope".
- "Acc" in the name is replaced by "Accelerometer".
- "Mag" in the name is replaced by "Magnitude
- "BodyBody" in the name is replaced by "Body"
+
+Names currently in the combined2 dataset:
+```{r}
+names(combined2)
+```
+
+Given the above names, we want to make the names more user-friendly given the following matches:
+*  "t" at the front of a name is replaced with "Time".
+*  "f" at the front of a name is replaced with "Frequency".
+*  "Gyro" in the name is replaced with "Gyroscope".
+*  "Acc" in the name is replaced by "Accelerometer".
+*  "Mag" in the name is replaced by "Magnitude
+*  "BodyBody" in the name is replaced by "Body"
+The above strings are matched using as case-sensitive values.  This means "gyro" will not be mistaken for "Gyro" or "acc" for "Acc".  
+It is important to note the following items:
+* "-mean()" means the column represents a mean measurement.
+* "-std()" means the column represents the standard deviation measurement.
+* The appended values "-X", "-Y", and "-Z" represent activity on an X, Y, or Z axis.
 
 ```{r}
 names(combined2) <- gsub("^t", "Time", names(combined2))
@@ -219,7 +238,10 @@ names(combined2) <- gsub("Acc", "Accelerometer", names(combined2))
 names(combined2) <- gsub("Gyro", "Gyroscope", names(combined2))
 names(combined2) <- gsub("Mag", "Magnitude", names(combined2))
 names(combined2) <- gsub("BodyBody", "Body", names(combined2))
+```
 
+The new column names:
+```{r}
 names(combined2)
 ```
 
@@ -250,7 +272,7 @@ str(tidydata)
 Save the tiday dataset.
 
 ```{r}
-write.csv(tidydata, "tidy.csv", row.names=FALSE)
+write.csv(tidydata, "tidy.csv", row.names = FALSE)
 write.table(tidydata, "tidy.txt",  row.names = FALSE)
 ```
  

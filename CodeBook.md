@@ -34,8 +34,6 @@ You should create one R script called run\_analysis.R that does the following.
 
 Set the working directory. Our input files are located in a sub-folder named: "dataset".
 
-setwd("~/GitHub/Humanavatar/Getting\_and\_Cleaning\_Data/Final\_Exercise")
-
 Load needed (required) libraries.
 ---------------------------------
 
@@ -57,7 +55,11 @@ read in the "features" (Variable labels) and activities.
 ``` r
 features <- read.table("dataset/features.txt")
 activities <- read.table("dataset/activity_labels.txt")
+```
 
+show the str() for features and activities
+
+``` r
 str(features)
 ```
 
@@ -1645,7 +1647,7 @@ str(combined)
     ##  $ tBodyAccJerk-energy()-Z             : num  -0.997 -0.999 -0.999 -0.999 -1 ...
     ##   [list output truncated]
 
-### End step 1.
+End step 1.
 
 2. Extracts only the measurements on the mean and standard deviation for each measurement.
 ------------------------------------------------------------------------------------------
@@ -1750,10 +1752,53 @@ str(combined2)
     ##  $ subject                    : int  2 2 2 2 2 2 2 2 2 2 ...
     ##  $ activity                   : int  5 5 5 5 5 5 5 5 5 5 ...
 
+list the names for combined2
+
+``` r
+names(combined2)
+```
+
+    ##  [1] "tBodyAcc-mean()-X"           "tBodyAcc-mean()-Y"          
+    ##  [3] "tBodyAcc-mean()-Z"           "tBodyAcc-std()-X"           
+    ##  [5] "tBodyAcc-std()-Y"            "tBodyAcc-std()-Z"           
+    ##  [7] "tGravityAcc-mean()-X"        "tGravityAcc-mean()-Y"       
+    ##  [9] "tGravityAcc-mean()-Z"        "tGravityAcc-std()-X"        
+    ## [11] "tGravityAcc-std()-Y"         "tGravityAcc-std()-Z"        
+    ## [13] "tBodyAccJerk-mean()-X"       "tBodyAccJerk-mean()-Y"      
+    ## [15] "tBodyAccJerk-mean()-Z"       "tBodyAccJerk-std()-X"       
+    ## [17] "tBodyAccJerk-std()-Y"        "tBodyAccJerk-std()-Z"       
+    ## [19] "tBodyGyro-mean()-X"          "tBodyGyro-mean()-Y"         
+    ## [21] "tBodyGyro-mean()-Z"          "tBodyGyro-std()-X"          
+    ## [23] "tBodyGyro-std()-Y"           "tBodyGyro-std()-Z"          
+    ## [25] "tBodyGyroJerk-mean()-X"      "tBodyGyroJerk-mean()-Y"     
+    ## [27] "tBodyGyroJerk-mean()-Z"      "tBodyGyroJerk-std()-X"      
+    ## [29] "tBodyGyroJerk-std()-Y"       "tBodyGyroJerk-std()-Z"      
+    ## [31] "tBodyAccMag-mean()"          "tBodyAccMag-std()"          
+    ## [33] "tGravityAccMag-mean()"       "tGravityAccMag-std()"       
+    ## [35] "tBodyAccJerkMag-mean()"      "tBodyAccJerkMag-std()"      
+    ## [37] "tBodyGyroMag-mean()"         "tBodyGyroMag-std()"         
+    ## [39] "tBodyGyroJerkMag-mean()"     "tBodyGyroJerkMag-std()"     
+    ## [41] "fBodyAcc-mean()-X"           "fBodyAcc-mean()-Y"          
+    ## [43] "fBodyAcc-mean()-Z"           "fBodyAcc-std()-X"           
+    ## [45] "fBodyAcc-std()-Y"            "fBodyAcc-std()-Z"           
+    ## [47] "fBodyAccJerk-mean()-X"       "fBodyAccJerk-mean()-Y"      
+    ## [49] "fBodyAccJerk-mean()-Z"       "fBodyAccJerk-std()-X"       
+    ## [51] "fBodyAccJerk-std()-Y"        "fBodyAccJerk-std()-Z"       
+    ## [53] "fBodyGyro-mean()-X"          "fBodyGyro-mean()-Y"         
+    ## [55] "fBodyGyro-mean()-Z"          "fBodyGyro-std()-X"          
+    ## [57] "fBodyGyro-std()-Y"           "fBodyGyro-std()-Z"          
+    ## [59] "fBodyAccMag-mean()"          "fBodyAccMag-std()"          
+    ## [61] "fBodyBodyAccJerkMag-mean()"  "fBodyBodyAccJerkMag-std()"  
+    ## [63] "fBodyBodyGyroMag-mean()"     "fBodyBodyGyroMag-std()"     
+    ## [65] "fBodyBodyGyroJerkMag-mean()" "fBodyBodyGyroJerkMag-std()" 
+    ## [67] "subject"                     "activity"
+
 End Step 2.
 
 3. Uses descriptive activity names to name the activities in the data set
 -------------------------------------------------------------------------
+
+First, verify there are no activity values which are not able to be matched to the values in the activities$V1 column.
 
 ``` r
 if(length(setdiff(combined2$activity, activities$V1))) {
@@ -1781,7 +1826,49 @@ End Step 3
 4. Appropriately label the data set with descriptive variable names.
 --------------------------------------------------------------------
 
-"t" at the front of a name is replaced with "Time". "f" at the front of a name is replaced with "Frequency". "Gyro" in the name is replaced with "Gyroscope". "Acc" in the name is replaced by "Accelerometer". "Mag" in the name is replaced by "Magnitude "BodyBody" in the name is replaced by "Body"
+Names currently in the combined2 dataset:
+
+``` r
+names(combined2)
+```
+
+    ##  [1] "tBodyAcc-mean()-X"           "tBodyAcc-mean()-Y"          
+    ##  [3] "tBodyAcc-mean()-Z"           "tBodyAcc-std()-X"           
+    ##  [5] "tBodyAcc-std()-Y"            "tBodyAcc-std()-Z"           
+    ##  [7] "tGravityAcc-mean()-X"        "tGravityAcc-mean()-Y"       
+    ##  [9] "tGravityAcc-mean()-Z"        "tGravityAcc-std()-X"        
+    ## [11] "tGravityAcc-std()-Y"         "tGravityAcc-std()-Z"        
+    ## [13] "tBodyAccJerk-mean()-X"       "tBodyAccJerk-mean()-Y"      
+    ## [15] "tBodyAccJerk-mean()-Z"       "tBodyAccJerk-std()-X"       
+    ## [17] "tBodyAccJerk-std()-Y"        "tBodyAccJerk-std()-Z"       
+    ## [19] "tBodyGyro-mean()-X"          "tBodyGyro-mean()-Y"         
+    ## [21] "tBodyGyro-mean()-Z"          "tBodyGyro-std()-X"          
+    ## [23] "tBodyGyro-std()-Y"           "tBodyGyro-std()-Z"          
+    ## [25] "tBodyGyroJerk-mean()-X"      "tBodyGyroJerk-mean()-Y"     
+    ## [27] "tBodyGyroJerk-mean()-Z"      "tBodyGyroJerk-std()-X"      
+    ## [29] "tBodyGyroJerk-std()-Y"       "tBodyGyroJerk-std()-Z"      
+    ## [31] "tBodyAccMag-mean()"          "tBodyAccMag-std()"          
+    ## [33] "tGravityAccMag-mean()"       "tGravityAccMag-std()"       
+    ## [35] "tBodyAccJerkMag-mean()"      "tBodyAccJerkMag-std()"      
+    ## [37] "tBodyGyroMag-mean()"         "tBodyGyroMag-std()"         
+    ## [39] "tBodyGyroJerkMag-mean()"     "tBodyGyroJerkMag-std()"     
+    ## [41] "fBodyAcc-mean()-X"           "fBodyAcc-mean()-Y"          
+    ## [43] "fBodyAcc-mean()-Z"           "fBodyAcc-std()-X"           
+    ## [45] "fBodyAcc-std()-Y"            "fBodyAcc-std()-Z"           
+    ## [47] "fBodyAccJerk-mean()-X"       "fBodyAccJerk-mean()-Y"      
+    ## [49] "fBodyAccJerk-mean()-Z"       "fBodyAccJerk-std()-X"       
+    ## [51] "fBodyAccJerk-std()-Y"        "fBodyAccJerk-std()-Z"       
+    ## [53] "fBodyGyro-mean()-X"          "fBodyGyro-mean()-Y"         
+    ## [55] "fBodyGyro-mean()-Z"          "fBodyGyro-std()-X"          
+    ## [57] "fBodyGyro-std()-Y"           "fBodyGyro-std()-Z"          
+    ## [59] "fBodyAccMag-mean()"          "fBodyAccMag-std()"          
+    ## [61] "fBodyBodyAccJerkMag-mean()"  "fBodyBodyAccJerkMag-std()"  
+    ## [63] "fBodyBodyGyroMag-mean()"     "fBodyBodyGyroMag-std()"     
+    ## [65] "fBodyBodyGyroJerkMag-mean()" "fBodyBodyGyroJerkMag-std()" 
+    ## [67] "subject"                     "activity"
+
+Given the above names, we want to make the names more user-friendly given the following matches: \* "t" at the front of a name is replaced with "Time". \* "f" at the front of a name is replaced with "Frequency". \* "Gyro" in the name is replaced with "Gyroscope". \* "Acc" in the name is replaced by "Accelerometer". \* "Mag" in the name is replaced by "Magnitude \* "BodyBody" in the name is replaced by "Body" The above strings are matched using as case-sensitive values. This means "gyro" will not be mistaken for "Gyro" or "acc" for "Acc".
+It is important to note the following items: \* "-mean()" means the column represents a mean measurement. \* "-std()" means the column represents the standard deviation measurement. \* The appended values "-X", "-Y", and "-Z" represent activity on an X, Y, or Z axis.
 
 ``` r
 names(combined2) <- gsub("^t", "Time", names(combined2))
@@ -1790,7 +1877,11 @@ names(combined2) <- gsub("Acc", "Accelerometer", names(combined2))
 names(combined2) <- gsub("Gyro", "Gyroscope", names(combined2))
 names(combined2) <- gsub("Mag", "Magnitude", names(combined2))
 names(combined2) <- gsub("BodyBody", "Body", names(combined2))
+```
 
+The new column names:
+
+``` r
 names(combined2)
 ```
 
@@ -2281,7 +2372,7 @@ str(tidydata)
 Save the tiday dataset.
 
 ``` r
-write.csv(tidydata, "tidy.csv", row.names=FALSE)
+write.csv(tidydata, "tidy.csv", row.names = FALSE)
 write.table(tidydata, "tidy.txt",  row.names = FALSE)
 ```
 
