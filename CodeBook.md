@@ -2282,6 +2282,7 @@ Save the tiday dataset.
 
 ``` r
 write.csv(tidydata, "tidy.csv", row.names=FALSE)
+write.table(tidydata, "tidy.txt",  row.names = FALSE)
 ```
 
 Good luck!

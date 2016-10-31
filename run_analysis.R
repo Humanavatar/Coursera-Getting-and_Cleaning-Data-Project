@@ -207,7 +207,8 @@ head(tidydata)
 str(tidydata)
 
 ## Save the tiday dataset.
-write.csv(tidydata, "tidy.csv", row.names=FALSE)
+write.csv(tidydata, "tidy.csv", row.names = FALSE)
+write.table(tidydata, "tidy.txt",  row.names = FALSE)
 ## 
 ## Good luck!
 ##
